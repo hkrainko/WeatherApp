@@ -58,7 +58,7 @@ class RealmCityRepoTest {
     @Test
     fun getCitiesByName_isCorrect() = runBlocking {
 
-        val result = cityRepo.getCitiesByName("na")
+        val result = cityRepo.getCitiesByName("Hong Kong")
 
         when (result) {
             is Success -> {
