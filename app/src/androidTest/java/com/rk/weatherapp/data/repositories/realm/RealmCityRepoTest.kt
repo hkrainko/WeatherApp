@@ -6,6 +6,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.rk.weatherapp.domain.entities.Failure
 import com.rk.weatherapp.domain.entities.Success
 import com.rk.weatherapp.domain.interfaces.repositories.CityRepo
+import com.rk.weatherapp.testdata.RealmCityTestData
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.kotlin.executeTransactionAwait
@@ -27,6 +28,10 @@ class RealmCityRepoTest {
     @Before
     fun setUp() = runBlocking {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+
+        //Load data
+        RealmCityTestData.loadRealmDataFromFile(appContext)
+
         Realm.init(appContext)
         val config = RealmConfiguration.Builder()
             .name("test-realm")
@@ -42,7 +47,6 @@ class RealmCityRepoTest {
         cityRepo = RealmCityRepo(realm)
 
         insertMockData()
-
     }
 
     @After
@@ -77,45 +81,44 @@ class RealmCityRepoTest {
     private suspend fun insertMockData() {
         realm.executeTransactionAwait { r: Realm ->
 
-            val city = RealmCity(
-                "1",
-                "nameEn",
-                "nameZh",
-                "country",
-                1.0,
-                2.0,
-                3.0,
-                4.0,
-                5.0,
-                6.0,
-                7.0,
-                8.0,
-                1636239003,
-                1636281055,
-                "conditionDesc",
-                RealmWeatherConditionType.Thunderstorm.desc,
-                1636239003,
-                1636239003
+            val cities = listOf<RealmCity>(
+                RealmCity(
+                    "1",
+                    "name",
+                    "country",
+                    1.0,
+                    2.0,
+                    3.0,
+                    4.0,
+                    5.0,
+                    6.0,
+                    7,
+                    8,
+                    "conditionDesc",
+                    RealmWeatherConditionType.Thunderstorm.desc,
+                    1636239003,
+                    1636239003
+                ),
+                RealmCity(
+                    "2",
+                    "name",
+                    "country2",
+                    1.0,
+                    2.0,
+                    3.0,
+                    4.0,
+                    5.0,
+                    6.0,
+                    7,
+                    8,
+                    "conditionDesc2",
+                    RealmWeatherConditionType.Thunderstorm.desc,
+                    1636200000,
+                    1636200000
+                )
             )
 
-            r.insertOrUpdate(city)
+            r.insertOrUpdate(cities)
         }
-
-
-//        realm.executeTransaction { r: Realm ->
-//
-//
-//
-//            // Instantiate the class using the factory function.
-//            val turtle = r.createObject(RealmCity::class.java, ObjectId())
-//            // Configure the instance.
-//            turtle.name = "Max"
-//            // Create a TurtleEnthusiast with a primary key.
-//            val primaryKeyValue = ObjectId()
-//            val turtleEnthusiast = r.createObject(
-//                TurtleEnthusiast::class.java,
-//                primaryKeyValue
-//            )
-//        }
     }
 }

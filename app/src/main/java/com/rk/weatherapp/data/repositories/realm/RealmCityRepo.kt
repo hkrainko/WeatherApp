@@ -15,7 +15,7 @@ class RealmCityRepo(
     override suspend fun getCitiesByName(name: String): Result<List<City>, Exception> {
         Log.v("RealmCityRepo", "Fetched object by name: $name")
         val rmCities = realm.where(RealmCity::class.java)
-            .contains("search", name).findAll()
+            .contains("name", name).findAll()
 
         val cities = rmCities.mapNotNull {
             it.toDomainCity()

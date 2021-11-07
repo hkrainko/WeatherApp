@@ -31,6 +31,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src/main/assets'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -43,6 +51,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation 'io.realm:realm-gradle-plugin:10.8.1'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.google.code.gson:gson:2.8.9'
     testImplementation 'junit:junit:4.+'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

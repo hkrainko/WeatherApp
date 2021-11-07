@@ -1,7 +1,6 @@
 package com.rk.weatherapp.data.repositories.realm
 
 import com.rk.weatherapp.domain.entities.City
-import com.rk.weatherapp.domain.entities.Coordinate
 import com.rk.weatherapp.domain.entities.Weather
 import com.rk.weatherapp.domain.entities.WeatherCondition
 import io.realm.RealmObject
@@ -12,16 +11,9 @@ open class RealmCity(
     @PrimaryKey
     var id: String = "",
 
-    // nameEn + nameZh + country?
-//    var search: String = "",
-
     @Required
-    var nameEn: String? = null,
-    var nameZh: String? = null,
+    var name: String? = null,
     var country: String? = null,
-
-    var lon: Double? = null,
-    var lat: Double? = null,
 
     // weather
     var temp: Double? = null,
@@ -42,8 +34,6 @@ open class RealmCity(
     var lastUpdatedTime: Long? = null,
 
     ) : RealmObject() {
-
-    var search: String = nameEn + nameZh
 
     var conditionTypeEnum: RealmWeatherConditionType
         get() {
@@ -100,16 +90,10 @@ fun RealmCity.toDomainCity(): City {
         sunrise
     )
 
-    val lon = lon
-    val lat = lat
-    val coordinate = if (lon != null && lat != null) Coordinate(lon, lat) else null
-
     return City(
         id,
         weather,
-        nameEn,
-        nameZh,
+        name,
         country,
-        coordinate,
     )
 }

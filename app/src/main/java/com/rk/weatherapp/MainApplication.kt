@@ -3,8 +3,10 @@ package com.rk.weatherapp
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.rk.weatherapp.data.repositories.realm.RealmCity
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import java.io.InputStream
 
 class MainApplication : Application() {
 
@@ -34,10 +36,23 @@ class MainApplication : Application() {
         Realm.setDefaultConfiguration(config)
 
         val realm = Realm.getInstance(config)
+
+        // Load realm
+        val count = realm.where(RealmCity::class.java).count();
+        Log.v("MainApplication", "init realm")
+        if (count <= 0) {
+            Log.v("MainApplication", "need to load data to realm")
+            loadDataToRealm(realm)
+        }
+
         Log.v("EXAMPLE", "Successfully opened a realm at: ${realm.path}")
     }
 
-    private fun loadRealmFile() {
+    private fun loadDataToRealm(realm: Realm) {
+        val inputStream: InputStream = applicationContext.assets.open("city.list.json.json")
 
+        realm.executeTransaction {
+            it.createAllFromJson(RealmCity::class.java, inputStream)
+        }
     }
 }
