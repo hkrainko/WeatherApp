@@ -29,9 +29,6 @@ class RealmCityRepoTest {
     fun setUp() = runBlocking {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-        //Load data
-        RealmCityTestData.loadRealmDataFromFile(appContext)
-
         Realm.init(appContext)
         val config = RealmConfiguration.Builder()
             .name("test-realm")
@@ -44,9 +41,12 @@ class RealmCityRepoTest {
 
         realm = Realm.getInstance(config)
 
+        //Load data
+        RealmCityTestData.loadDataToRealm(appContext, realm)
+
         cityRepo = RealmCityRepo(realm)
 
-        insertMockData()
+//        insertMockData()
     }
 
     @After
@@ -62,7 +62,7 @@ class RealmCityRepoTest {
 
         when (result) {
             is Success -> {
-                Log.v("Test", "Success: ${result.value}")
+                Log.v("Test", "Success: ${result.value.size}")
                 Assert.assertNotEquals(0, result.value.size)
             }
             is Failure -> {
