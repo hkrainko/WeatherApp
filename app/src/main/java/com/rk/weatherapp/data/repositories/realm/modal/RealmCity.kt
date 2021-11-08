@@ -20,8 +20,8 @@ open class RealmCity(
     var feelsLike: Double? = null,
     var tempMin: Double? = null,
     var tempMax: Double? = null,
-    var pressure: Double? = null,
-    var humidity: Double? = null,
+    var pressure: Long? = null,
+    var humidity: Long? = null,
 
     var sunset: Long? = null,
     var sunrise: Long? = null,

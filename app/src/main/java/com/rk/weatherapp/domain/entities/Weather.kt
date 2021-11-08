@@ -9,8 +9,8 @@ data class Weather(
     val feelsLike: Double?,
     val tempMin: Double?,
     val tempMax: Double?,
-    val pressure: Double?,
-    val humidity: Double?,
+    val pressure: Long?,
+    val humidity: Long?,
 
     val sunset: Long?,
     val sunrise: Long?,
