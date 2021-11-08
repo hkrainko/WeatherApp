@@ -36,7 +36,7 @@ class SearchHistoryDialogFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        dialog
         _binding = FragmentSearchHistoryDialogBinding.inflate(inflater, container, false)
         return binding.root
 

@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.rk.weatherapp.R
+import com.rk.weatherapp.ui.search.SearchHistoryDialogFragment
 
 class MainFragment : Fragment() {
 
@@ -43,6 +45,10 @@ class MainFragment : Fragment() {
                 return true
             }
         })
+
+//        val dialogFragment: SearchHistoryDialogFragment =
+//            SearchHistoryDialogFragment.newInstance(10)
+//        dialogFragment.show(fragmentManager!!, "dialogFragment")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
