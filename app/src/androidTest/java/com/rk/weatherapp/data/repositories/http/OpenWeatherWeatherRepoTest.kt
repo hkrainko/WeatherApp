@@ -34,7 +34,7 @@ class OpenWeatherWeatherRepoTest {
 
 
     @Test
-    fun getCitiesByName_isCorrect(): Unit = runBlocking {
+    fun getWeatherForCity_isCorrect(): Unit = runBlocking {
 
         val result = weatherRepo.getWeatherForCity("1821993")
 

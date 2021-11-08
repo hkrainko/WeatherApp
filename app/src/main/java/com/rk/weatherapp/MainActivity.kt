@@ -1,8 +1,13 @@
 package com.rk.weatherapp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.view.View
+import android.widget.SearchView
+import android.widget.SearchView.OnQueryTextListener
 import com.rk.weatherapp.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -17,4 +22,10 @@ class MainActivity : AppCompatActivity() {
                     .commitNow()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+
 }
