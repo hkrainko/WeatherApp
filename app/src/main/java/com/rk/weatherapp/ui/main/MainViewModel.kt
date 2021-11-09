@@ -33,6 +33,10 @@ class MainViewModel : ViewModel() {
 
     // UI events
     fun onQueryTextChange(q: String) {
+        if (q.isEmpty()) {
+            cities.value = emptyList()
+            return
+        }
 //        GlobalScope.async {
 //            when (val result = searchHistoryUseCase.searchCitiesByName(q)) {
 //                is Success -> {
@@ -48,9 +52,11 @@ class MainViewModel : ViewModel() {
             when (val result = searchHistoryUseCase.searchCitiesByName(q)) {
                 is Success -> {
                     Log.d("MainViewModel", "cities:${result.value.size}")
+                    cities.value = result.value
                 }
                 is Failure -> {
                     Log.d("MainViewModel", "Failure:${result.reason}")
+                    cities.value = emptyList()
                 }
             }
         }

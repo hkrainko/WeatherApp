@@ -34,23 +34,23 @@ class MainFragment : Fragment() {
         LocalCityFragment.newInstance()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         searchView = view.findViewById<SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(qString: String): Boolean {
                 Log.d("MainActivity", "onQueryTextChange:${qString}")
-                if (qString.isNotEmpty()) {
-                    viewModel.onQueryTextChange(qString)
-                }
+                viewModel.onQueryTextChange(qString)
                 return true
             }
+
             override fun onQueryTextSubmit(qString: String): Boolean {
                 Log.d("MainActivity", "onQueryTextSubmit:${qString}")
                 return true
@@ -67,6 +67,7 @@ class MainFragment : Fragment() {
 //        val dialogFragment: SearchHistoryDialogFragment =
 //            SearchHistoryDialogFragment.newInstance(10)
 //        dialogFragment.show(fragmentManager!!, "dialogFragment")
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -75,15 +76,18 @@ class MainFragment : Fragment() {
         // TODO: Use the ViewModel
 
         viewModel.getCities().observe(viewLifecycleOwner, Observer { cities ->
-            print("cities:$cities")
+            Log.d("MainFragment", "cities:${cities.size}")
+            searchFragment.viewModel.cities.value = cities
         })
     }
 
     private fun setFragmentContainer(isSearching: Boolean) {
         if (isSearching) {
-            parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, searchFragment).commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, searchFragment).commit()
         } else {
-            parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, localCityFragment).commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, localCityFragment).commit()
         }
     }
 
