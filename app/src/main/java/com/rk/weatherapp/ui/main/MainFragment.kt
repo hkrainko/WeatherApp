@@ -9,12 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.rk.weatherapp.R
+import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.ui.local.LocalCityFragment
 import com.rk.weatherapp.ui.search.SearchFragment
 import com.rk.weatherapp.ui.search.SearchHistoryDialogFragment
+import com.rk.weatherapp.ui.search.SearchResultFragment
 
 class MainFragment : Fragment() {
 
@@ -27,7 +31,15 @@ class MainFragment : Fragment() {
     private lateinit var searchView: SearchView
 
     private val searchFragment by lazy {
-        SearchFragment.newInstance()
+        SearchFragment.newInstance(object : SearchFragment.OnCityItemClickListener {
+            override fun onCityItemClick(city: City) {
+                setFragmentContainer(false)
+                val action =
+                    MainFragmentDirections
+                        .actionMainFragmentToSearchResultFragment()
+                view?.findNavController()?.navigate(action)
+            }
+        })
     }
 
     private val localCityFragment by lazy {
@@ -57,8 +69,7 @@ class MainFragment : Fragment() {
             }
         })
 
-        searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
-            Log.d("MainActivity", "onFocusChangeListener hasFocus:${hasFocus}")
+        searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             setFragmentContainer(hasFocus)
         }
 

@@ -16,11 +16,11 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "MainApplication onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
-                    .commitNow()
-        }
+//        if (savedInstanceState == null) {
+//            supportFragmentManager.beginTransaction()
+//                    .replace(R.id.container, MainFragment.newInstance())
+//                    .commitNow()
+//        }
     }
 
     override fun onResume() {

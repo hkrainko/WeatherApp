@@ -7,21 +7,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.SearchView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rk.weatherapp.R
 import com.rk.weatherapp.databinding.AdapterCityBinding
-import com.rk.weatherapp.databinding.FragmentSearchHistoryItemBinding
 import com.rk.weatherapp.domain.entities.City
+import com.rk.weatherapp.ui.main.MainFragmentDirections
 
-class SearchFragment : Fragment() {
+class SearchFragment(private val listener: OnCityItemClickListener) : Fragment() {
 
     companion object {
-        fun newInstance() = SearchFragment()
+        fun newInstance(listener: OnCityItemClickListener): SearchFragment {
+            return SearchFragment(listener)
+        }
     }
 
     lateinit var viewModel: SearchViewModel
@@ -38,9 +38,10 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.search_result_recycler_view)
         recyclerView.apply {
-            adapter = SearchCityAdapter(object: OnItemClickListener {
-                override fun onItemClick(city: City) {
+            adapter = SearchCityAdapter(object: OnCityItemClickListener {
+                override fun onCityItemClick(city: City) {
                     Log.d("SearchFragment", "onItemClick:${city.id}")
+                    listener.onCityItemClick(city)
                 }
             })
             layoutManager = LinearLayoutManager(context)
@@ -58,23 +59,27 @@ class SearchFragment : Fragment() {
         })
     }
 
+    fun setCityItemClickListener(listener: OnCityItemClickListener) {
+
+    }
+
     // Inner class
     private inner class ViewHolder internal constructor(binding: AdapterCityBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         internal val textView: TextView = binding.textView
 
-        fun bind(city: City, clickListener: OnItemClickListener) {
+        fun bind(city: City, clickListener: OnCityItemClickListener) {
             textView.text = city.name
 
             itemView.setOnClickListener {
-                clickListener.onItemClick(city)
+                clickListener.onCityItemClick(city)
             }
         }
     }
 
     private inner class SearchCityAdapter internal constructor(
-        var itemClickListener: OnItemClickListener,
+        var cityItemClickListener: OnCityItemClickListener,
         private var cities: MutableList<City> = mutableListOf<City>()
     ) :
         RecyclerView.Adapter<SearchFragment.ViewHolder>() {
@@ -102,7 +107,7 @@ class SearchFragment : Fragment() {
         override fun onBindViewHolder(holder: SearchFragment.ViewHolder, position: Int) {
             val city = cities[position]
             holder.textView.text = city.name
-            holder.bind(city, itemClickListener)
+            holder.bind(city, cityItemClickListener)
         }
 
         override fun getItemCount(): Int {
@@ -110,8 +115,8 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private interface OnItemClickListener {
-        fun onItemClick(city: City)
+    interface OnCityItemClickListener {
+        fun onCityItemClick(city: City)
     }
 
 }
