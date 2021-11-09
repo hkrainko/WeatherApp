@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.rk.weatherapp.R
+import com.rk.weatherapp.ui.local.LocalCityFragment
+import com.rk.weatherapp.ui.search.SearchFragment
 import com.rk.weatherapp.ui.search.SearchHistoryDialogFragment
 
 class MainFragment : Fragment() {
@@ -22,6 +25,14 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
 
     private lateinit var searchView: SearchView
+
+    private val searchFragment by lazy {
+        SearchFragment.newInstance()
+    }
+
+    private val localCityFragment by lazy {
+        LocalCityFragment.newInstance()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -46,6 +57,13 @@ class MainFragment : Fragment() {
             }
         })
 
+        searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
+            Log.d("MainActivity", "onFocusChangeListener hasFocus:${hasFocus}")
+            setFragmentContainer(hasFocus)
+        }
+
+        setFragmentContainer(searchView.isFocused)
+
 //        val dialogFragment: SearchHistoryDialogFragment =
 //            SearchHistoryDialogFragment.newInstance(10)
 //        dialogFragment.show(fragmentManager!!, "dialogFragment")
@@ -56,9 +74,17 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         // TODO: Use the ViewModel
 
-        viewModel.getCities().observe(this, Observer { cities ->
+        viewModel.getCities().observe(viewLifecycleOwner, Observer { cities ->
             print("cities:$cities")
         })
+    }
+
+    private fun setFragmentContainer(isSearching: Boolean) {
+        if (isSearching) {
+            parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, searchFragment).commit()
+        } else {
+            parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, localCityFragment).commit()
+        }
     }
 
 }
