@@ -11,5 +11,6 @@ interface RetrofitApiService {
         @Query("id") id: String,
         @Query("appid") appId: String,
         @Query("lang") lang: String,
+        @Query("units") units: String
     ): Call<CurrentWeatherDataApiResponse>
 }

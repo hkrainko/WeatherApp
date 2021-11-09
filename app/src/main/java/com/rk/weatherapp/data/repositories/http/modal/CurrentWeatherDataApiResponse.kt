@@ -74,6 +74,8 @@ data class CurrentWeatherDataApiResponse(
 
 fun CurrentWeatherDataApiResponse.toDomainWeather(): Weather {
     return Weather(
+        id,
+        name,
         if (weather.isNotEmpty()) weather[0].toDomainWeatherCondition() else null,
         main.temp,
         main.feelsLike,

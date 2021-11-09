@@ -83,7 +83,7 @@ class RealmCityRepoTest {
 
             val cities = listOf<RealmCity>(
                 RealmCity(
-                    "1",
+                    1,
                     "name",
                     "country",
                     1.0,
@@ -100,7 +100,7 @@ class RealmCityRepoTest {
                     1636239003
                 ),
                 RealmCity(
-                    "2",
+                    2,
                     "name",
                     "country2",
                     1.0,

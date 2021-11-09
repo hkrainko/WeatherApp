@@ -33,7 +33,8 @@ class MainFragment : Fragment() {
     private val searchFragment by lazy {
         SearchFragment.newInstance(object : SearchFragment.OnCityItemClickListener {
             override fun onCityItemClick(city: City) {
-                setFragmentContainer(false)
+                searchView.clearFocus()
+                searchView.onActionViewCollapsed()
                 val action =
                     MainFragmentDirections
                         .actionMainFragmentToSearchResultFragment()
@@ -72,8 +73,8 @@ class MainFragment : Fragment() {
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             setFragmentContainer(hasFocus)
         }
-
-        setFragmentContainer(searchView.isFocused)
+        setFragmentContainer(false)
+//        setFragmentContainer(searchView.isFocused)
 
 //        val dialogFragment: SearchHistoryDialogFragment =
 //            SearchHistoryDialogFragment.newInstance(10)
@@ -92,12 +93,16 @@ class MainFragment : Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun setFragmentContainer(isSearching: Boolean) {
         if (isSearching) {
-            parentFragmentManager.beginTransaction()
+            childFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView, searchFragment).commit()
         } else {
-            parentFragmentManager.beginTransaction()
+            childFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView, localCityFragment).commit()
         }
     }

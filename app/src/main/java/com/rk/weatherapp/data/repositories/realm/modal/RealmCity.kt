@@ -9,7 +9,7 @@ import io.realm.annotations.Required
 
 open class RealmCity(
     @PrimaryKey
-    var id: String = "",
+    var id: Long = -1,
 
     @Required
     var name: String? = null,
@@ -79,6 +79,8 @@ fun RealmCity.toDomainCity(): City {
     )
 
     val weather = Weather(
+        id,
+        name,
         weatherCondition,
         temp,
         feelsLike,

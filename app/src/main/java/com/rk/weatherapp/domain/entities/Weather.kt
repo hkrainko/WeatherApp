@@ -3,6 +3,9 @@ package com.rk.weatherapp.domain.entities
 
 data class Weather(
 
+    val cityId: Long,
+    val cityName: String?,
+
     val condition: WeatherCondition?,
 
     val temp: Double?,

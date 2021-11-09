@@ -19,7 +19,7 @@ class RealmCityRepo(
         Log.v("RealmCityRepo", "Fetched object by name: $name")
 
         val rmCities = realm.where(RealmCity::class.java)
-            .contains("name", name, Case.INSENSITIVE).findAllAsync()
+            .contains("name", name, Case.INSENSITIVE).findAll()
 
         val cities = rmCities.mapNotNull {
             it.toDomainCity()
