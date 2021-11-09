@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.lifecycle.Observer
@@ -37,7 +38,11 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.search_result_recycler_view)
         recyclerView.apply {
-            adapter = SearchCityAdapter()
+            adapter = SearchCityAdapter(object: OnItemClickListener {
+                override fun onItemClick(city: City) {
+                    Log.d("SearchFragment", "onItemClick:${city.id}")
+                }
+            })
             layoutManager = LinearLayoutManager(context)
         }
         super.onViewCreated(view, savedInstanceState)
@@ -58,9 +63,20 @@ class SearchFragment : Fragment() {
         RecyclerView.ViewHolder(binding.root) {
 
         internal val textView: TextView = binding.textView
+
+        fun bind(city: City, clickListener: OnItemClickListener) {
+            textView.text = city.name
+
+            itemView.setOnClickListener {
+                clickListener.onItemClick(city)
+            }
+        }
     }
 
-    private inner class SearchCityAdapter internal constructor(private var cities: MutableList<City> = mutableListOf<City>()) :
+    private inner class SearchCityAdapter internal constructor(
+        var itemClickListener: OnItemClickListener,
+        private var cities: MutableList<City> = mutableListOf<City>()
+    ) :
         RecyclerView.Adapter<SearchFragment.ViewHolder>() {
 
         fun setCitiesList(cities: List<City>) {
@@ -86,11 +102,16 @@ class SearchFragment : Fragment() {
         override fun onBindViewHolder(holder: SearchFragment.ViewHolder, position: Int) {
             val city = cities[position]
             holder.textView.text = city.name
+            holder.bind(city, itemClickListener)
         }
 
         override fun getItemCount(): Int {
             return cities.size
         }
+    }
+
+    private interface OnItemClickListener {
+        fun onItemClick(city: City)
     }
 
 }
