@@ -26,7 +26,7 @@ class OpenWeatherWeatherRepo() : WeatherRepo {
     override suspend fun getWeatherForCity(cityId: String): Result<Weather, Exception> {
 
         val resp = kotlin.runCatching {
-            apiManager.currentWeatherData(cityId, appId, "zh_tw", "Metric").execute()
+            apiManager.currentWeatherData(cityId, appId, "en", "Metric").execute()
         }.getOrElse {
             return Failure(IOException())
         }
