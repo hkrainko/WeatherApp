@@ -1,4 +1,4 @@
-package com.rk.weatherapp.ui.search
+package com.rk.weatherapp.ui.search.result
 
 import androidx.lifecycle.ViewModel
 

@@ -61,7 +61,7 @@ class SearchFragment(private val listener: OnCityItemClickListener) : Fragment()
 
     }
 
-    // Inner class
+    // Inner classes
     private inner class ViewHolder internal constructor(binding: AdapterCityBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

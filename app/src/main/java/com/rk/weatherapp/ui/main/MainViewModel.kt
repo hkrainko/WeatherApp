@@ -23,16 +23,10 @@ class MainViewModel : ViewModel() {
     val cities = MutableLiveData<List<City>>()
     val localCityWeather = MutableLiveData<Weather?>()
 
-    private val coordinator: Coordinator? = null
-
     // UI events
     fun onResume() {
-//        if (coordinator != null) {
-//            getWeatherByCoordinator(coordinator)
-//        }
         // TODO: get history city weather
     }
-
 
     fun onQueryTextChange(q: String) {
         if (q.isEmpty()) {

@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchResultFragment"
-        android:name="com.rk.weatherapp.ui.search.SearchResultFragment"
+        android:name="com.rk.weatherapp.ui.search.result.SearchResultFragment"
         android:label="search_result_fragment"
         tools:layout="@layout/search_result_fragment" />
 </navigation>
