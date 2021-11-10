@@ -37,16 +37,28 @@ class RealmCityRepo(
 //        }
     }
 
-    override suspend fun getLastAccessedCities(size: Long): Result<List<City>, Exception> {
+    override suspend fun getLastAccessedCities(size: Int): Result<List<City>, Exception> {
         val rmCities = realm.where(RealmCity::class.java)
             .sort("lastAccessTime", Sort.DESCENDING)
-            .limit(size)
+            .limit(size.toLong())
             .findAll()
 
         val cities = rmCities.mapNotNull {
             it.toDomainCity()
         }
         return Success(cities)
+    }
+
+    override suspend fun updateCityLastAccessedTime(cityId: Long): Result<Unit, Exception> {
+        realm.executeTransactionAwait { r: Realm ->
+            val realmCity = r.where(RealmCity::class.java)
+                .equalTo("id", cityId)
+                .findFirst()
+            if (realmCity != null) {
+                realmCity.lastAccessTime = System.currentTimeMillis()
+            }
+        }
+        return Success(Unit)
     }
 
     override suspend fun updateCity(weather: Weather): Result<Unit, Exception> {

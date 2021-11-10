@@ -1,21 +1,20 @@
 package com.rk.weatherapp.ui.search.history
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.rk.weatherapp.R
-import com.rk.weatherapp.databinding.AdapterCityBinding
 import com.rk.weatherapp.databinding.AdapterSearchHistoryBinding
 import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.infrastructure.network.GlideImageLoader
 import com.rk.weatherapp.infrastructure.toOpenWeatherUrl
-import com.rk.weatherapp.ui.search.result.SearchResultFragment
 
 class SearchHistoryFragment : Fragment() {
 
@@ -23,7 +22,9 @@ class SearchHistoryFragment : Fragment() {
         fun newInstance() = SearchHistoryFragment()
     }
 
-    private lateinit var viewModel: SearchHistoryViewModel
+    lateinit var viewModel: SearchHistoryViewModel
+
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,9 @@ class SearchHistoryFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SearchHistoryViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel.cities.observe(viewLifecycleOwner, Observer { cities ->
+            (recyclerView.adapter as SearchHistoryFragment.SearchResultAdapter).setCitiesList(cities)
+        })
     }
 
     // inner classes

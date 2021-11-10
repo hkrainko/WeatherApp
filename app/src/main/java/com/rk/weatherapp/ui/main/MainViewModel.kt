@@ -22,10 +22,11 @@ class MainViewModel : ViewModel() {
 
     val cities = MutableLiveData<List<City>>()
     val localCityWeather = MutableLiveData<Weather?>()
+    val historyCities = MutableLiveData<List<City>>()
 
     // UI events
     fun onResume() {
-        // TODO: get history city weather
+        getHistory()
     }
 
     fun onQueryTextChange(q: String) {
@@ -58,13 +59,25 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun onClickSearchResult(cityId: Long) {
+        // TODO: async call
+        runBlocking {
+            searchHistoryUseCase.setLastAccessedCity(cityId)
+        }
+    }
+
+    fun onClickSearchHistory(cityId: Long) {
+        runBlocking {
+            searchHistoryUseCase.setLastAccessedCity(cityId)
+        }
+    }
+
     fun onLocationUpdate(lat: Double, lon: Double) {
         getWeatherByCoordinator(Coordinator(lat, lon))
     }
 
     // private methods
     private fun getWeatherByCoordinator(coordinator: Coordinator) {
-        Log.d("MainViewModel", "getWeatherByCoordinator:${coordinator.toString()}")
         CoroutineScope(Dispatchers.IO).async {
             when (val weather = weatherUseCase.getWeatherByGeographic(coordinator)) {
                 is Success -> {
@@ -76,6 +89,19 @@ class MainViewModel : ViewModel() {
                 }
                 else -> {
                     // TODO: error handling
+                }
+            }
+        }
+    }
+
+    private fun getHistory() {
+        runBlocking {
+            when (val result = searchHistoryUseCase.getLastAccessedCities(5)) {
+                is Success -> {
+                    historyCities.value = result.value!!
+                }
+                is Failure -> {
+                    historyCities.value = emptyList()
                 }
             }
         }

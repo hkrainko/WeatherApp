@@ -14,4 +14,12 @@ class DefaultSearchHistoryUseCase(
     override suspend fun searchCitiesByName(name: String): Result<List<City>, Exception> {
         return cityRepo.getCitiesByName(name)
     }
+
+    override suspend fun getLastAccessedCities(size: Int): Result<List<City>, Exception> {
+        return cityRepo.getLastAccessedCities(size)
+    }
+
+    override suspend fun setLastAccessedCity(cityId: Long): Result<Unit, Exception> {
+        return cityRepo.updateCityLastAccessedTime(cityId)
+    }
 }

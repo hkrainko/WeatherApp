@@ -7,4 +7,7 @@ import java.lang.Exception
 interface SearchHistoryUseCase {
 
     suspend fun searchCitiesByName(name: String): Result<List<City>, Exception>
+    suspend fun getLastAccessedCities(size: Int): Result<List<City>, Exception>
+    suspend fun setLastAccessedCity(cityId: Long): Result<Unit, Exception>
+
 }

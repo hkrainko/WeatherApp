@@ -27,6 +27,7 @@ import com.rk.weatherapp.R
 import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.ui.local.LocalCityFragment
 import com.rk.weatherapp.ui.search.SearchFragment
+import com.rk.weatherapp.ui.search.history.SearchHistoryFragment
 
 class MainFragment : Fragment() {
 
@@ -43,6 +44,7 @@ class MainFragment : Fragment() {
     private val searchFragment by lazy {
         SearchFragment.newInstance(object : SearchFragment.OnCityItemClickListener {
             override fun onCityItemClick(city: City) {
+                viewModel.onClickSearchResult(city.id)
                 searchView.clearFocus()
                 searchView.onActionViewCollapsed()
                 val action =
@@ -51,6 +53,10 @@ class MainFragment : Fragment() {
                 view?.findNavController()?.navigate(action)
             }
         })
+    }
+
+    private val searchHistoryFragment by lazy {
+        SearchHistoryFragment.newInstance()
     }
 
     private val localCityFragment: LocalCityFragment by lazy {
@@ -107,6 +113,10 @@ class MainFragment : Fragment() {
 
         viewModel.localCityWeather.observe(viewLifecycleOwner, {
             localCityFragment.viewModel.cityWeather.value = it
+        })
+
+        viewModel.historyCities.observe(viewLifecycleOwner, {
+            searchHistoryFragment.viewModel.cities.value = it
         })
     }
 

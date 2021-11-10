@@ -12,7 +12,7 @@ import com.rk.weatherapp.R
 import com.rk.weatherapp.databinding.LocalCityFragmentBinding
 import com.rk.weatherapp.domain.entities.Weather
 import com.rk.weatherapp.infrastructure.network.GlideImageLoader
-import com.rk.weatherapp.infrastructure.toDisplayDate
+import com.rk.weatherapp.infrastructure.toDisplayHHmm
 import com.rk.weatherapp.infrastructure.toOpenWeatherUrl
 
 class LocalCityFragment(private val weather: Weather?) : Fragment() {
@@ -57,8 +57,8 @@ class LocalCityFragment(private val weather: Weather?) : Fragment() {
             binding.lowTempTv.text = "L ${cityWeather?.tempMin.toString()}º"
             binding.pressureTV.text = cityWeather?.pressure.toString()
             binding.humidityTV.text = "${cityWeather?.humidity.toString()}%"
-            binding.sunriseTV.text = cityWeather?.sunrise?.toDisplayDate() ?: "-"
-            binding.sunsetTV.text = cityWeather?.sunset?.toDisplayDate() ?: "-"
+            binding.sunriseTV.text = cityWeather?.sunrise?.toDisplayHHmm() ?: "-"
+            binding.sunsetTV.text = cityWeather?.sunset?.toDisplayHHmm() ?: "-"
         })
     }
 
