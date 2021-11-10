@@ -6,5 +6,5 @@ import java.lang.Exception
 
 interface WeatherRepo {
 
-    suspend fun getWeatherForCity(cityId: String): Result<Weather, Exception>
+    suspend fun getWeatherByCityId(cityId: String): Result<Weather, Exception>
 }

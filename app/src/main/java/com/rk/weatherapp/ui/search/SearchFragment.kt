@@ -19,9 +19,7 @@ import com.rk.weatherapp.ui.main.MainFragmentDirections
 class SearchFragment(private val listener: OnCityItemClickListener) : Fragment() {
 
     companion object {
-        fun newInstance(listener: OnCityItemClickListener): SearchFragment {
-            return SearchFragment(listener)
-        }
+        fun newInstance(listener: OnCityItemClickListener) = SearchFragment(listener)
     }
 
     lateinit var viewModel: SearchViewModel
@@ -38,7 +36,7 @@ class SearchFragment(private val listener: OnCityItemClickListener) : Fragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.search_result_recycler_view)
         recyclerView.apply {
-            adapter = SearchCityAdapter(object: OnCityItemClickListener {
+            adapter = SearchCityAdapter(object : OnCityItemClickListener {
                 override fun onCityItemClick(city: City) {
                     Log.d("SearchFragment", "onItemClick:${city.id}")
                     listener.onCityItemClick(city)

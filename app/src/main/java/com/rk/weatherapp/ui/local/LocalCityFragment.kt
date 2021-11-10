@@ -1,23 +1,24 @@
 package com.rk.weatherapp.ui.local
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.rk.weatherapp.R
 import com.rk.weatherapp.databinding.LocalCityFragmentBinding
+import com.rk.weatherapp.domain.entities.Weather
 
-class LocalCityFragment : Fragment() {
+class LocalCityFragment(private val weather: Weather?) : Fragment() {
 
     companion object {
-        fun newInstance() = LocalCityFragment()
+        fun newInstance(weather: Weather?) = LocalCityFragment(weather)
     }
 
-    private lateinit var viewModel: LocalCityViewModel
+    lateinit var viewModel: LocalCityViewModel
 
     private lateinit var binding: LocalCityFragmentBinding
 
@@ -38,7 +39,10 @@ class LocalCityFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(LocalCityViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            LocalCityViewModelFactory(weather)
+        ).get(LocalCityViewModel::class.java)
         viewModel.cityWeather.observe(viewLifecycleOwner, Observer { cityWeather ->
             cityNameTv.text = cityWeather?.cityName ?: "-"
             binding.cityNameTv.text = cityWeather?.cityName ?: "-"
@@ -47,11 +51,6 @@ class LocalCityFragment : Fragment() {
             binding.highTempTv.text = "H ${cityWeather?.tempMax.toString()}º"
             binding.lowTempTv.text = "L ${cityWeather?.tempMin.toString()}º"
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.onResume()
     }
 
 }

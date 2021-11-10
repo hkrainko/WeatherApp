@@ -43,8 +43,8 @@ class MainFragment : Fragment() {
         })
     }
 
-    private val localCityFragment by lazy {
-        LocalCityFragment.newInstance()
+    private val localCityFragment: LocalCityFragment by lazy {
+        LocalCityFragment.newInstance(null)
     }
 
     override fun onCreateView(
@@ -85,16 +85,19 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
 
-        viewModel.getCities().observe(viewLifecycleOwner, Observer { cities ->
-            Log.d("MainFragment", "cities:${cities.size}")
+        viewModel.cities.observe(viewLifecycleOwner, Observer { cities ->
             searchFragment.viewModel.cities.value = cities
+        })
+
+        viewModel.localCityWeather.observe(viewLifecycleOwner, {
+            localCityFragment.viewModel.cityWeather.value = it
         })
     }
 
     override fun onResume() {
         super.onResume()
+        viewModel.onResume()
     }
 
     private fun setFragmentContainer(isSearching: Boolean) {

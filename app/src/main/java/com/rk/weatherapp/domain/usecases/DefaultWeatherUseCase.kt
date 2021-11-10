@@ -10,7 +10,7 @@ class DefaultWeatherUseCase(
     private val weatherRepo: WeatherRepo
 ): WeatherUseCase {
 
-    override suspend fun getWeatherForCity(cityId: String): Result<Weather, Exception> {
-        return weatherRepo.getWeatherForCity(cityId)
+    override suspend fun getWeatherByCityId(cityId: String): Result<Weather, Exception> {
+        return weatherRepo.getWeatherByCityId(cityId)
     }
 }

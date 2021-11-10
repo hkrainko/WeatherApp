@@ -23,7 +23,7 @@ class OpenWeatherWeatherRepo() : WeatherRepo {
     private val apiManager: RetrofitApiService =
         RetrofitApiManager.client.create(RetrofitApiService::class.java)
 
-    override suspend fun getWeatherForCity(cityId: String): Result<Weather, Exception> {
+    override suspend fun getWeatherByCityId(cityId: String): Result<Weather, Exception> {
 
         val resp = kotlin.runCatching {
             apiManager.currentWeatherData(cityId, appId, "en", "Metric").execute()

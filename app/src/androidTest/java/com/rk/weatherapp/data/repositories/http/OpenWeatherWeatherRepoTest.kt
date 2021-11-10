@@ -34,9 +34,9 @@ class OpenWeatherWeatherRepoTest {
 
 
     @Test
-    fun getWeatherForCity_isCorrect(): Unit = runBlocking {
+    fun getWeatherByCityId_isCorrect(): Unit = runBlocking {
 
-        val result = weatherRepo.getWeatherForCity("1821993")
+        val result = weatherRepo.getWeatherByCityId("1821993")
 
         when (result) {
             is Success -> {
