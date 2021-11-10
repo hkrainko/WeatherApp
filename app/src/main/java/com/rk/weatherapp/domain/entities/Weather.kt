@@ -17,10 +17,12 @@ data class Weather(
 
     val sunset: Long?,
     val sunrise: Long?,
+
+    val lastUpdatedTime: Long?
 )
 
 data class WeatherCondition(
-    val desc: String,
+    val desc: String?,
     val type: Type
 ) {
     enum class Type {

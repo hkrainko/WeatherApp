@@ -85,6 +85,7 @@ fun CurrentWeatherDataApiResponse.toDomainWeather(): Weather {
         main.humidity,
         sys.sunset,
         sys.sunrise,
+        dt
     )
 }
 

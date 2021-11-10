@@ -26,7 +26,7 @@ open class RealmCity(
     var sunset: Long? = null,
     var sunrise: Long? = null,
 
-    var conditionDesc: String = "",
+    var conditionDesc: String? = null,
     var conditionType: String = RealmWeatherConditionType.Unknown.desc,
 
     // access info
@@ -71,6 +71,19 @@ fun RealmWeatherConditionType.toDomainWeatherCondition(): WeatherCondition.Type 
     }
 }
 
+fun WeatherCondition.Type.toRealmWeatherConditionType(): RealmWeatherConditionType {
+    return when (this) {
+        WeatherCondition.Type.Thunderstorm -> RealmWeatherConditionType.Thunderstorm
+        WeatherCondition.Type.Drizzle -> RealmWeatherConditionType.Drizzle
+        WeatherCondition.Type.Rain -> RealmWeatherConditionType.Rain
+        WeatherCondition.Type.Snow -> RealmWeatherConditionType.Snow
+        WeatherCondition.Type.Atmosphere -> RealmWeatherConditionType.Atmosphere
+        WeatherCondition.Type.Clear -> RealmWeatherConditionType.Clear
+        WeatherCondition.Type.Clouds -> RealmWeatherConditionType.Clouds
+        else -> RealmWeatherConditionType.Unknown
+    }
+}
+
 fun RealmCity.toDomainCity(): City {
 
     val weatherCondition = WeatherCondition(
@@ -89,7 +102,8 @@ fun RealmCity.toDomainCity(): City {
         pressure,
         humidity,
         sunset,
-        sunrise
+        sunrise,
+        lastUpdatedTime,
     )
 
     return City(

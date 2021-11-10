@@ -2,10 +2,7 @@ package com.rk.weatherapp.data.repositories.http
 
 import com.rk.weatherapp.data.repositories.http.modal.CurrentWeatherDataApiResponse
 import com.rk.weatherapp.data.repositories.http.modal.toDomainWeather
-import com.rk.weatherapp.domain.entities.Failure
-import com.rk.weatherapp.domain.entities.Result
-import com.rk.weatherapp.domain.entities.Success
-import com.rk.weatherapp.domain.entities.Weather
+import com.rk.weatherapp.domain.entities.*
 import com.rk.weatherapp.domain.interfaces.repositories.WeatherRepo
 import com.rk.weatherapp.infrastructure.network.RetrofitApiManager
 import com.rk.weatherapp.infrastructure.network.RetrofitApiService
@@ -23,10 +20,35 @@ class OpenWeatherWeatherRepo() : WeatherRepo {
     private val apiManager: RetrofitApiService =
         RetrofitApiManager.client.create(RetrofitApiService::class.java)
 
-    override suspend fun getWeatherByCityId(cityId: String): Result<Weather, Exception> {
+    override suspend fun getWeatherByCityId(cityId: Long): Result<Weather, Exception> {
 
         val resp = kotlin.runCatching {
-            apiManager.currentWeatherData(cityId, appId, "en", "Metric").execute()
+            apiManager.currentWeatherData(
+                id = cityId,
+                appId = appId,
+                lang = "en",
+                units = "Metric"
+            ).execute()
+        }.getOrElse {
+            return Failure(IOException())
+        }
+
+        if (resp.body() == null) {
+            return Failure(Exception())
+        }
+
+        return Success(resp.body()!!.toDomainWeather())
+    }
+
+    override suspend fun getWeatherByGeographic(coordinator: Coordinator): Result<Weather, Exception> {
+        val resp = kotlin.runCatching {
+            apiManager.currentWeatherData(
+                lat = coordinator.latitude,
+                lon = coordinator.longitude,
+                appId = appId,
+                lang = "en",
+                units = "Metric"
+            ).execute()
         }.getOrElse {
             return Failure(IOException())
         }

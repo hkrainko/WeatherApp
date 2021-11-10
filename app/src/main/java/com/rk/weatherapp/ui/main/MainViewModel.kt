@@ -6,10 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rk.weatherapp.data.repositories.http.OpenWeatherWeatherRepo
 import com.rk.weatherapp.data.repositories.realm.RealmCityRepo
-import com.rk.weatherapp.domain.entities.City
-import com.rk.weatherapp.domain.entities.Failure
-import com.rk.weatherapp.domain.entities.Success
-import com.rk.weatherapp.domain.entities.Weather
+import com.rk.weatherapp.domain.entities.*
 import com.rk.weatherapp.domain.interfaces.usecases.SearchHistoryUseCase
 import com.rk.weatherapp.domain.interfaces.usecases.WeatherUseCase
 import com.rk.weatherapp.domain.usecases.DefaultSearchHistoryUseCase
@@ -20,31 +17,19 @@ import kotlinx.coroutines.*
 class MainViewModel : ViewModel() {
 
     private val weatherUseCase: WeatherUseCase = DefaultWeatherUseCase(OpenWeatherWeatherRepo())
-
     private val searchHistoryUseCase: SearchHistoryUseCase =
         DefaultSearchHistoryUseCase(RealmCityRepo(RealmDBManager.realm))
 
     val cities = MutableLiveData<List<City>>()
-
     val localCityWeather = MutableLiveData<Weather?>()
+
+    private val coordinator: Coordinator? = null
 
     // UI events
     fun onResume() {
-        CoroutineScope(Dispatchers.IO).async {
-            when (val weather = weatherUseCase.getWeatherByCityId("1821993")) {
-                is Success -> {
-                    localCityWeather.postValue(weather.value)
-                }
-                is Failure -> {
-                    weather.reason
-                    // TODO: error handling
-                }
-                else -> {
-                    // TODO: error handling
-                }
-            }
-        }
-
+//        if (coordinator != null) {
+//            getWeatherByCoordinator(coordinator)
+//        }
         // TODO: get history city weather
     }
 
@@ -74,6 +59,29 @@ class MainViewModel : ViewModel() {
                 is Failure -> {
                     Log.d("MainViewModel", "Failure:${result.reason}")
                     cities.value = emptyList()
+                }
+            }
+        }
+    }
+
+    fun onLocationUpdate(lat: Double, lon: Double) {
+        getWeatherByCoordinator(Coordinator(lat, lon))
+    }
+
+    // private methods
+    private fun getWeatherByCoordinator(coordinator: Coordinator) {
+        Log.d("MainViewModel", "getWeatherByCoordinator:${coordinator.toString()}")
+        CoroutineScope(Dispatchers.IO).async {
+            when (val weather = weatherUseCase.getWeatherByGeographic(coordinator)) {
+                is Success -> {
+                    localCityWeather.postValue(weather.value)
+                }
+                is Failure -> {
+                    weather.reason
+                    // TODO: error handling
+                }
+                else -> {
+                    // TODO: error handling
                 }
             }
         }
