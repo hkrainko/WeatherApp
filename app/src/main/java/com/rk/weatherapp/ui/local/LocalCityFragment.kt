@@ -14,7 +14,6 @@ import com.rk.weatherapp.domain.entities.Weather
 import com.rk.weatherapp.infrastructure.network.GlideImageLoader
 import com.rk.weatherapp.infrastructure.toDisplayHHmm
 import com.rk.weatherapp.infrastructure.toOpenWeatherUrl
-import com.squareup.picasso.Picasso
 
 class LocalCityFragment(private val weather: Weather?) : Fragment() {
 
@@ -50,8 +49,11 @@ class LocalCityFragment(private val weather: Weather?) : Fragment() {
         viewModel.cityWeather.observe(viewLifecycleOwner, Observer { cityWeather ->
             binding.cityNameTv.text = cityWeather?.cityName ?: "-"
             binding.conditionIv
-            GlideImageLoader.loadImage(binding.conditionIv.context,
-                cityWeather?.condition?.type?.toOpenWeatherUrl(), binding.conditionIv)
+            GlideImageLoader.loadImage(
+                binding.conditionIv.context,
+                cityWeather?.condition?.type?.toOpenWeatherUrl(),
+                binding.conditionIv
+            )
             binding.conditionDescTv.text = cityWeather?.condition?.desc ?: "-"
             binding.tempTv.text = "${cityWeather?.temp.toString()}º"
             binding.highTempTv.text = "H ${cityWeather?.tempMax.toString()}º"
