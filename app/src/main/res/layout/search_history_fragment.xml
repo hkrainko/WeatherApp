@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.search.history.SearchHistoryFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchHistoryRecyclerView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 </FrameLayout>

@@ -56,7 +56,16 @@ class MainFragment : Fragment() {
     }
 
     private val searchHistoryFragment by lazy {
-        SearchHistoryFragment.newInstance()
+        SearchHistoryFragment.newInstance(object :
+            SearchHistoryFragment.OnSearchHistoryItemClickListener {
+            override fun onSearchHistoryItemClick(city: City) {
+                viewModel.onClickSearchHistory(city.id)
+                val action =
+                    MainFragmentDirections
+                        .actionMainFragmentToSearchResultFragment()
+                view?.findNavController()?.navigate(action)
+            }
+        })
     }
 
     private val localCityFragment: LocalCityFragment by lazy {
@@ -95,11 +104,8 @@ class MainFragment : Fragment() {
             setFragmentContainer(hasFocus)
         }
         setFragmentContainer(false)
-//        setFragmentContainer(searchView.isFocused)
-
-//        val dialogFragment: SearchHistoryDialogFragment =
-//            SearchHistoryDialogFragment.newInstance(10)
-//        dialogFragment.show(fragmentManager!!, "dialogFragment")
+        childFragmentManager.beginTransaction()
+            .replace(R.id.searchHistoryFragmentContainerView, searchHistoryFragment).commit()
         super.onViewCreated(view, savedInstanceState)
     }
 

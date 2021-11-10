@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rk.weatherapp.R
 import com.rk.weatherapp.databinding.AdapterSearchHistoryBinding
@@ -16,10 +17,10 @@ import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.infrastructure.network.GlideImageLoader
 import com.rk.weatherapp.infrastructure.toOpenWeatherUrl
 
-class SearchHistoryFragment : Fragment() {
+class SearchHistoryFragment(private val listener: OnSearchHistoryItemClickListener) : Fragment() {
 
     companion object {
-        fun newInstance() = SearchHistoryFragment()
+        fun newInstance(listener: OnSearchHistoryItemClickListener) = SearchHistoryFragment(listener)
     }
 
     lateinit var viewModel: SearchHistoryViewModel
@@ -33,11 +34,24 @@ class SearchHistoryFragment : Fragment() {
         return inflater.inflate(R.layout.search_history_fragment, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        recyclerView = view.findViewById(R.id.searchHistoryRecyclerView)
+        recyclerView.apply {
+            adapter = SearchHistoryAdapter(object : OnSearchHistoryItemClickListener {
+                override fun onSearchHistoryItemClick(city: City) {
+                    listener.onSearchHistoryItemClick(city)
+                }
+            })
+            layoutManager = LinearLayoutManager(context)
+        }
+        super.onViewCreated(view, savedInstanceState)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SearchHistoryViewModel::class.java)
         viewModel.cities.observe(viewLifecycleOwner, Observer { cities ->
-            (recyclerView.adapter as SearchHistoryFragment.SearchResultAdapter).setCitiesList(cities)
+            (recyclerView.adapter as SearchHistoryFragment.SearchHistoryAdapter).setCitiesList(cities)
         })
     }
 
@@ -63,7 +77,7 @@ class SearchHistoryFragment : Fragment() {
         }
     }
 
-    private inner class SearchResultAdapter internal constructor(
+    private inner class SearchHistoryAdapter internal constructor(
         var clickListener: OnSearchHistoryItemClickListener,
         private var cities: MutableList<City> = mutableListOf<City>()
     ) :
