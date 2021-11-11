@@ -22,12 +22,4 @@ class MainApplication : Application() {
         RealmDBManager.setup(applicationContext)
         Log.d("MainApplication", "MainApplication onCreate")
     }
-
-    private fun loadDataToRealm(realm: Realm) {
-        val inputStream: InputStream = applicationContext.assets.open("city.list.json.json")
-
-        realm.executeTransaction {
-            it.createAllFromJson(RealmCity::class.java, inputStream)
-        }
-    }
 }
