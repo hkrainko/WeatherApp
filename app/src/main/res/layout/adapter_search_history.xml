@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -15,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_weight="0"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:maxWidth="200dp"
@@ -27,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_weight="0"
             android:text="30º"
             android:textSize="20sp" />
 
@@ -35,8 +38,21 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginLeft="16dp"
+            android:layout_weight="0"
             android:contentDescription="TODO"
             app:srcCompat="@drawable/outline_wb_sunny_amber_a100_24dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:scaleType="fitEnd"
+            app:srcCompat="@drawable/baseline_delete_black_48dp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -14,7 +14,9 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -60,6 +62,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var searchHistoryFragment: SearchHistoryFragment
+    private lateinit var searchHistoryFragmentContainerView: FragmentContainerView
 
     private val localCityFragment: LocalCityFragment by lazy {
         LocalCityFragment.newInstance(null)
@@ -96,7 +99,9 @@ class MainFragment : Fragment() {
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             setFragmentContainer(hasFocus)
         }
-        setFragmentContainer(false)
+
+        searchHistoryFragmentContainerView = view.findViewById(R.id.searchHistoryFragmentContainerView)
+//        setFragmentContainer(false)
 //        childFragmentManager.beginTransaction()
 //            .replace(R.id.searchHistoryFragmentContainerView, searchHistoryFragment).commit()
         super.onViewCreated(view, savedInstanceState)
@@ -131,6 +136,7 @@ class MainFragment : Fragment() {
         childFragmentManager.beginTransaction()
             .replace(R.id.searchHistoryFragmentContainerView, searchHistoryFragment).commit()
 
+        setFragmentContainer(false)
     }
 
     override fun onResume() {
@@ -141,11 +147,11 @@ class MainFragment : Fragment() {
 
     private fun setFragmentContainer(isSearching: Boolean) {
         if (isSearching) {
-            childFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, searchFragment).commit()
+            childFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, searchFragment).commit()
+            searchHistoryFragmentContainerView.visibility = View.GONE
         } else {
-            childFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, localCityFragment).commit()
+            childFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, localCityFragment).commit()
+            searchHistoryFragmentContainerView.visibility = View.VISIBLE
         }
     }
 
