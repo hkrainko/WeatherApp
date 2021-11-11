@@ -22,9 +22,7 @@ class OpenWeatherWeatherRepoTest {
     @Before
     fun setUp() = runBlocking {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-
         weatherRepo = OpenWeatherWeatherRepo()
-
     }
 
     @After
@@ -36,7 +34,7 @@ class OpenWeatherWeatherRepoTest {
     @Test
     fun getWeatherByCityId_isCorrect(): Unit = runBlocking {
 
-        val result = weatherRepo.getWeatherByCityId("1821993")
+        val result = weatherRepo.getWeatherByCityId(1821993)
 
         when (result) {
             is Success -> {
@@ -48,7 +46,5 @@ class OpenWeatherWeatherRepoTest {
                 Assert.fail()
             }
         }
-
-        Log.v("Test", "123")
     }
 }

@@ -12,7 +12,7 @@ class DefaultSearchHistoryUseCase(
 ): SearchHistoryUseCase {
 
     override suspend fun searchCitiesByName(name: String): Result<List<City>, Exception> {
-        return cityRepo.getCitiesByName(name)
+        return cityRepo.getCitiesByName(name, 20)
     }
 
     override suspend fun getSearchHistory(size: Int): Result<List<City>, Exception> {

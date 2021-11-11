@@ -58,7 +58,7 @@ class RealmCityRepoTest {
     @Test
     fun getCitiesByName_isCorrect() = runBlocking {
 
-        val result = cityRepo.getCitiesByName("Hong Kong")
+        val result = cityRepo.getCitiesByName("Hong Kong", 20)
 
         when (result) {
             is Success -> {
@@ -70,11 +70,6 @@ class RealmCityRepoTest {
                 Assert.fail()
             }
         }
-
-        Log.v("Test", "123")
-
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-//        Assert.assertEquals("com.rk.weatherapp", appContext.packageName)
     }
 
 
