@@ -6,17 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.domain.entities.Weather
 
-class LocalCityViewModel(weather: Weather?) : ViewModel() {
+class LocalCityViewModel : ViewModel() {
 
     val displayCity = MutableLiveData<City?>()
 
-    val isLocal = MutableLiveData<Boolean>(true)
+    val isLocal = MutableLiveData(true)
 
     var localCity: City? = null
-
-    init {
-//        city.value = weather
-    }
 
     fun updateLocalCity(city: City) {
         this.localCity = city
@@ -56,16 +52,16 @@ class LocalCityViewModel(weather: Weather?) : ViewModel() {
     }
 }
 
-class LocalCityViewModelFactory constructor(private val weather: Weather?) :
-    ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return with(modelClass) {
-            when {
-                isAssignableFrom(LocalCityViewModel::class.java) ->
-                    LocalCityViewModel(weather)
-                else ->
-                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-            }
-        } as T
-    }
-}
+//class LocalCityViewModelFactory constructor(private val weather: Weather?) :
+//    ViewModelProvider.NewInstanceFactory() {
+//    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+//        return with(modelClass) {
+//            when {
+//                isAssignableFrom(LocalCityViewModel::class.java) ->
+//                    LocalCityViewModel()
+//                else ->
+//                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+//            }
+//        } as T
+//    }
+//}

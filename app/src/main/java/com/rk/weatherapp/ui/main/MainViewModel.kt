@@ -68,20 +68,21 @@ class MainViewModel : ViewModel() {
 
     fun onClickSearchResult(city: City) {
         // TODO: async call
-        localCityViewModel.displayQueryCity(city)
-        getWeatherByCityId(city.id)
-        runBlocking {
-            searchHistoryUseCase.setSearchHistory(city.id)
-        }
-    }
-
-    fun onClickSearchHistory(city: City) {
-        localCityViewModel.displayQueryCity(city)
-        getWeatherByCityId(city.id)
         runBlocking {
             searchHistoryUseCase.setSearchHistory(city.id)
         }
         getHistory()
+        localCityViewModel.displayQueryCity(city)
+        getWeatherByCityId(city.id)
+    }
+
+    fun onClickSearchHistory(city: City) {
+        runBlocking {
+            searchHistoryUseCase.setSearchHistory(city.id)
+        }
+        getHistory()
+        localCityViewModel.displayQueryCity(city)
+        getWeatherByCityId(city.id)
     }
 
     fun onClickSearchHistoryDelete(cityId: Long) {

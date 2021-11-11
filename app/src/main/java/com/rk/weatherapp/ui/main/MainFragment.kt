@@ -29,7 +29,7 @@ import com.rk.weatherapp.R
 import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.ui.local.LocalCityFragment
 import com.rk.weatherapp.ui.local.LocalCityViewModel
-import com.rk.weatherapp.ui.local.LocalCityViewModelFactory
+//import com.rk.weatherapp.ui.local.LocalCityViewModelFactory
 import com.rk.weatherapp.ui.search.SearchFragment
 import com.rk.weatherapp.ui.search.SearchViewModel
 import com.rk.weatherapp.ui.search.history.SearchHistoryFragment
@@ -53,10 +53,6 @@ class MainFragment : Fragment() {
                 viewModel.onClickSearchResult(city)
                 searchView.clearFocus()
                 searchView.onActionViewCollapsed()
-//                val action =
-//                    MainFragmentDirections
-//                        .actionMainFragmentToSearchResultFragment()
-//                view?.findNavController()?.navigate(action)
             }
         })
     }
@@ -114,10 +110,6 @@ class MainFragment : Fragment() {
             SearchHistoryFragment.OnSearchHistoryItemClickListener {
             override fun onSearchHistoryItemClick(city: City) {
                 viewModel.onClickSearchHistory(city)
-//                val action =
-//                    MainFragmentDirections
-//                        .actionMainFragmentToSearchResultFragment()
-//                view?.findNavController()?.navigate(action)
             }
 
             override fun onSearchHistoryDeleteClick(city: City) {
@@ -129,7 +121,7 @@ class MainFragment : Fragment() {
         viewModel.searchHistoryVm = ViewModelProvider(this).get(SearchHistoryViewModel::class.java)
         viewModel.localCityViewModel = ViewModelProvider(
             this,
-            LocalCityViewModelFactory(null)
+//            LocalCityViewModelFactory(null)
         ).get(LocalCityViewModel::class.java)
         viewModel.searchVm = ViewModelProvider(this).get(SearchViewModel::class.java)
 
