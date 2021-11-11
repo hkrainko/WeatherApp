@@ -50,13 +50,13 @@ class MainFragment : Fragment() {
     private val searchFragment by lazy {
         SearchFragment.newInstance(object : SearchFragment.OnCityItemClickListener {
             override fun onCityItemClick(city: City) {
-                viewModel.onClickSearchResult(city.id)
+                viewModel.onClickSearchResult(city)
                 searchView.clearFocus()
                 searchView.onActionViewCollapsed()
-                val action =
-                    MainFragmentDirections
-                        .actionMainFragmentToSearchResultFragment()
-                view?.findNavController()?.navigate(action)
+//                val action =
+//                    MainFragmentDirections
+//                        .actionMainFragmentToSearchResultFragment()
+//                view?.findNavController()?.navigate(action)
             }
         })
     }
@@ -113,11 +113,11 @@ class MainFragment : Fragment() {
         searchHistoryFragment = SearchHistoryFragment.newInstance(object :
             SearchHistoryFragment.OnSearchHistoryItemClickListener {
             override fun onSearchHistoryItemClick(city: City) {
-                viewModel.onClickSearchHistory(city.id)
-                val action =
-                    MainFragmentDirections
-                        .actionMainFragmentToSearchResultFragment()
-                view?.findNavController()?.navigate(action)
+                viewModel.onClickSearchHistory(city)
+//                val action =
+//                    MainFragmentDirections
+//                        .actionMainFragmentToSearchResultFragment()
+//                view?.findNavController()?.navigate(action)
             }
 
             override fun onSearchHistoryDeleteClick(city: City) {

@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.rk.weatherapp.R
 import com.rk.weatherapp.databinding.LocalCityFragmentBinding
 import com.rk.weatherapp.domain.entities.Weather
@@ -37,6 +35,9 @@ class LocalCityFragment(private val weather: Weather?) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         cityNameTv = view.findViewById(R.id.cityNameTv)
+        binding.backImageButton.setOnClickListener {
+            viewModel.onClickBackButton()
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -46,22 +47,26 @@ class LocalCityFragment(private val weather: Weather?) : Fragment() {
 //            this,
 //            LocalCityViewModelFactory(weather)
 //        ).get(LocalCityViewModel::class.java)
-        viewModel.city.observe(viewLifecycleOwner, Observer { city ->
-            binding.cityNameTv.text = city?.weather?.cityName ?: "-"
+        viewModel.displayCity.observe(viewLifecycleOwner, {
+            binding.cityNameTv.text = it?.weather?.cityName ?: "-"
             binding.conditionIv
             GlideImageLoader.loadImage(
                 binding.conditionIv.context,
-                city?.weather?.condition?.type?.toOpenWeatherUrl(),
+                it?.weather?.condition?.type?.toOpenWeatherUrl(),
                 binding.conditionIv
             )
-            binding.conditionDescTv.text = city?.weather?.condition?.desc ?: "-"
-            binding.tempTv.text = "${city?.weather?.temp ?: "-"}º"
-            binding.highTempTv.text = "H ${city?.weather?.tempMax ?: "-"}º"
-            binding.lowTempTv.text = "L ${city?.weather?.tempMin ?: "-"}º"
-            binding.pressureTV.text = if(city?.weather?.pressure != null) city?.weather?.pressure.toString() else "-"
-            binding.humidityTV.text = "${city?.weather?.humidity ?: "-"}%"
-            binding.sunriseTV.text = city?.weather?.sunrise?.toDisplayHHmm() ?: "-"
-            binding.sunsetTV.text = city?.weather?.sunset?.toDisplayHHmm() ?: "-"
+            binding.conditionDescTv.text = it?.weather?.condition?.desc ?: "-"
+            binding.tempTv.text = "${it?.weather?.temp ?: "-"}º"
+            binding.highTempTv.text = "H ${it?.weather?.tempMax ?: "-"}º"
+            binding.lowTempTv.text = "L ${it?.weather?.tempMin ?: "-"}º"
+            binding.pressureTV.text = if(it?.weather?.pressure != null) it?.weather?.pressure.toString() else "-"
+            binding.humidityTV.text = "${it?.weather?.humidity ?: "-"}%"
+            binding.sunriseTV.text = it?.weather?.sunrise?.toDisplayHHmm() ?: "-"
+            binding.sunsetTV.text = it?.weather?.sunset?.toDisplayHHmm() ?: "-"
+        })
+        viewModel.isLocal.observe(viewLifecycleOwner, {
+            binding.backImageButton.visibility = if (it) View.GONE else View.VISIBLE
+            binding.localImageView.visibility =  if (it) View.VISIBLE else View.GONE
         })
     }
 

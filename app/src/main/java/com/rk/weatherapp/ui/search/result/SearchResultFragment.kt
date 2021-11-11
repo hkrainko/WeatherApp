@@ -30,11 +30,7 @@ class SearchResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         backButton = view.findViewById<ImageButton>(R.id.back_button)
-        backButton.setOnClickListener(object: View.OnClickListener{
-            override fun onClick(v: View?) {
-                view.findNavController().popBackStack()
-            }
-        })
+        backButton.setOnClickListener { view.findNavController().popBackStack() }
 
         super.onViewCreated(view, savedInstanceState)
     }

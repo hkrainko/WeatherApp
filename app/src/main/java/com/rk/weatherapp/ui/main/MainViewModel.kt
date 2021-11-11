@@ -4,7 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.rk.weatherapp.data.repositories.http.OpenWeatherWeatherRepo
 import com.rk.weatherapp.data.repositories.realm.RealmCityRepo
-import com.rk.weatherapp.domain.entities.*
+import com.rk.weatherapp.domain.entities.City
+import com.rk.weatherapp.domain.entities.Coordinator
+import com.rk.weatherapp.domain.entities.Failure
+import com.rk.weatherapp.domain.entities.Success
 import com.rk.weatherapp.domain.interfaces.usecases.SearchHistoryUseCase
 import com.rk.weatherapp.domain.interfaces.usecases.WeatherUseCase
 import com.rk.weatherapp.domain.usecases.DefaultSearchHistoryUseCase
@@ -13,7 +16,10 @@ import com.rk.weatherapp.infrastructure.database.RealmDBManager
 import com.rk.weatherapp.ui.local.LocalCityViewModel
 import com.rk.weatherapp.ui.search.SearchViewModel
 import com.rk.weatherapp.ui.search.history.SearchHistoryViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 class MainViewModel : ViewModel() {
 
@@ -60,16 +66,20 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun onClickSearchResult(cityId: Long) {
+    fun onClickSearchResult(city: City) {
         // TODO: async call
+        localCityViewModel.displayQueryCity(city)
+        getWeatherByCityId(city.id)
         runBlocking {
-            searchHistoryUseCase.setSearchHistory(cityId)
+            searchHistoryUseCase.setSearchHistory(city.id)
         }
     }
 
-    fun onClickSearchHistory(cityId: Long) {
+    fun onClickSearchHistory(city: City) {
+        localCityViewModel.displayQueryCity(city)
+        getWeatherByCityId(city.id)
         runBlocking {
-            searchHistoryUseCase.setSearchHistory(cityId)
+            searchHistoryUseCase.setSearchHistory(city.id)
         }
         getHistory()
     }
@@ -91,7 +101,7 @@ class MainViewModel : ViewModel() {
             when (val result = weatherUseCase.getWeatherByGeographic(coordinator)) {
                 is Success -> {
                     val city = City(result.value.cityId, result.value, result.value.cityName, null)
-                    localCityViewModel.updateCity(city)
+                    localCityViewModel.updateLocalCity(city)
                 }
                 is Failure -> {
                     result.reason

@@ -8,28 +8,52 @@ import com.rk.weatherapp.domain.entities.Weather
 
 class LocalCityViewModel(weather: Weather?) : ViewModel() {
 
-    val city = MutableLiveData<City?>()
+    val displayCity = MutableLiveData<City?>()
+
+    val isLocal = MutableLiveData<Boolean>(true)
+
+    var localCity: City? = null
 
     init {
 //        city.value = weather
     }
 
-    fun updateCity(city: City?) {
-        this.city.postValue(city)
+    fun updateLocalCity(city: City) {
+        this.localCity = city
+        if (displayCity.value == null || displayCity.value?.id == city.id) {
+            this.displayCity.postValue(city)
+            this.isLocal.postValue(true)
+        }
+    }
+
+    fun displayQueryCity(city: City?) {
+        this.displayCity.postValue(city)
+        this.isLocal.postValue(false)
     }
 
     fun updateWeather(weather: Weather?) {
         if (weather == null) {
             return
         }
-        if (city.value?.id != weather.cityId) {
-            return
+        if (displayCity.value?.id == weather.cityId) {
+            val copyOfCity = displayCity.value
+            copyOfCity?.weather = weather
+            displayCity.postValue(copyOfCity)
         }
-        val copyOfCity = city.value
-        copyOfCity?.weather = weather
-        city.postValue(copyOfCity)
+        if (localCity?.id == weather.cityId) {
+            if (localCity != null) {
+                val copyOfCity = localCity
+                copyOfCity?.weather = weather
+                localCity = copyOfCity
+            }
+        }
     }
 
+    // UI events
+    fun onClickBackButton() {
+        this.displayCity.postValue(localCity)
+        this.isLocal.postValue(true)
+    }
 }
 
 class LocalCityViewModelFactory constructor(private val weather: Weather?) :
