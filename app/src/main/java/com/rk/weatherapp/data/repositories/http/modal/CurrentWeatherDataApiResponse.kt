@@ -97,6 +97,15 @@ fun CurrentWeatherDataApiResponse.WeatherElement.toDomainWeatherCondition(): Wea
         "Rain" -> WeatherCondition.Type.Rain
         "Snow" -> WeatherCondition.Type.Snow
         "Atmosphere" -> WeatherCondition.Type.Atmosphere
+        "Mist" -> WeatherCondition.Type.Mist
+        "Smoke" -> WeatherCondition.Type.Smoke
+        "Haze" -> WeatherCondition.Type.Haze
+        "Dust" -> WeatherCondition.Type.Dust
+        "Fog" -> WeatherCondition.Type.Fog
+        "Sand" -> WeatherCondition.Type.Sand
+        "Ash" -> WeatherCondition.Type.Ash
+        "Squall" -> WeatherCondition.Type.Squall
+        "Tornado" -> WeatherCondition.Type.Tornado
         "Clear" -> WeatherCondition.Type.Clear
         "Clouds" -> WeatherCondition.Type.Clouds
         else -> WeatherCondition.Type.Unknown

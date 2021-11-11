@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:text="Hong Kong"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="30º"
+        android:text="-º"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -61,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="H 32"
+        android:text="H -"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/tempTv" />
@@ -72,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="L 21"
+        android:text="L -"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/tempTv" />
@@ -111,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="1000"
+            android:text="-"
             android:textSize="20sp" />
 
         <ImageView
@@ -126,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="1000"
+            android:text="-"
             android:textSize="20sp" />
 
         <ImageView
@@ -141,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="1000"
+            android:text="-"
             android:textSize="20sp" />
 
         <ImageView
@@ -156,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="1000"
+            android:text="-"
             android:textSize="20sp" />
     </LinearLayout>
 

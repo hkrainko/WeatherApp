@@ -72,7 +72,7 @@ class SearchHistoryFragment(private val listener: OnSearchHistoryItemClickListen
         fun bind(city: City, clickListener: OnSearchHistoryItemClickListener) {
             cityTV.text = city.name
             tempTV.text =
-                if (city.weather?.temp != null) city.weather!!.temp.toString() else "-"
+                if (city.weather?.temp != null) "${city.weather!!.temp.toString()}º" else "-º"
             if (context != null) {
                 GlideImageLoader.loadImage(
                     context!!, city.weather?.condition?.type?.toOpenWeatherUrl(), weatherCondIV)

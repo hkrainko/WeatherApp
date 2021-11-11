@@ -31,7 +31,8 @@
             android:layout_marginStart="16dp"
             android:layout_weight="0"
             android:text="30º"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/weatherCondIV"

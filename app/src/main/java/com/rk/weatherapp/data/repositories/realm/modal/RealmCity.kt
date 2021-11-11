@@ -53,6 +53,15 @@ enum class RealmWeatherConditionType(val desc: String) {
     Rain("Rain"),
     Snow("Snow"),
     Atmosphere("Atmosphere"),
+    Mist("Mist"),
+    Smoke("Smoke"),
+    Haze("Haze"),
+    Dust("Dust"),
+    Fog("Fog"),
+    Sand("Sand"),
+    Ash("Ash"),
+    Squall("Squall"),
+    Tornado("Tornado"),
     Clear("Clear"),
     Clouds("Clouds"),
     Unknown("Unknown")
@@ -65,6 +74,15 @@ fun RealmWeatherConditionType.toDomainWeatherCondition(): WeatherCondition.Type 
         RealmWeatherConditionType.Rain -> WeatherCondition.Type.Rain
         RealmWeatherConditionType.Snow -> WeatherCondition.Type.Snow
         RealmWeatherConditionType.Atmosphere -> WeatherCondition.Type.Atmosphere
+        RealmWeatherConditionType.Mist -> WeatherCondition.Type.Mist
+        RealmWeatherConditionType.Smoke -> WeatherCondition.Type.Smoke
+        RealmWeatherConditionType.Haze -> WeatherCondition.Type.Haze
+        RealmWeatherConditionType.Dust -> WeatherCondition.Type.Dust
+        RealmWeatherConditionType.Fog -> WeatherCondition.Type.Fog
+        RealmWeatherConditionType.Sand -> WeatherCondition.Type.Sand
+        RealmWeatherConditionType.Ash -> WeatherCondition.Type.Ash
+        RealmWeatherConditionType.Squall -> WeatherCondition.Type.Squall
+        RealmWeatherConditionType.Tornado -> WeatherCondition.Type.Tornado
         RealmWeatherConditionType.Clear -> WeatherCondition.Type.Clear
         RealmWeatherConditionType.Clouds -> WeatherCondition.Type.Clouds
         else -> WeatherCondition.Type.Unknown
