@@ -8,6 +8,7 @@ class SearchViewModel : ViewModel() {
 
     val cities: MutableLiveData<List<City>> = MutableLiveData()
 
-
-
+    fun updateCities(cities: List<City>) {
+        this.cities.postValue(cities)
+    }
 }

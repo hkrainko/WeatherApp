@@ -12,6 +12,10 @@ import com.rk.weatherapp.domain.interfaces.usecases.WeatherUseCase
 import com.rk.weatherapp.domain.usecases.DefaultSearchHistoryUseCase
 import com.rk.weatherapp.domain.usecases.DefaultWeatherUseCase
 import com.rk.weatherapp.infrastructure.database.RealmDBManager
+import com.rk.weatherapp.ui.local.LocalCityViewModel
+import com.rk.weatherapp.ui.search.SearchViewModel
+import com.rk.weatherapp.ui.search.history.SearchHistoryViewModel
+import com.rk.weatherapp.ui.search.result.SearchResultViewModel
 import kotlinx.coroutines.*
 
 class MainViewModel : ViewModel() {
@@ -20,9 +24,9 @@ class MainViewModel : ViewModel() {
     private val searchHistoryUseCase: SearchHistoryUseCase =
         DefaultSearchHistoryUseCase(RealmCityRepo(RealmDBManager.realm))
 
-    val cities = MutableLiveData<List<City>>()
-    val localCityWeather = MutableLiveData<Weather?>()
-    val historyCities = MutableLiveData<List<City>>()
+    lateinit var searchHistoryVm: SearchHistoryViewModel
+    lateinit var searchVm: SearchViewModel
+    lateinit var localCityViewModel: LocalCityViewModel
 
     // UI events
     fun onResume() {
@@ -31,7 +35,7 @@ class MainViewModel : ViewModel() {
 
     fun onQueryTextChange(q: String) {
         if (q.isEmpty()) {
-            cities.value = emptyList()
+            searchVm.updateCities(emptyList())
             return
         }
 //        GlobalScope.async {
@@ -49,11 +53,11 @@ class MainViewModel : ViewModel() {
             when (val result = searchHistoryUseCase.searchCitiesByName(q)) {
                 is Success -> {
                     Log.d("MainViewModel", "cities:${result.value.size}")
-                    cities.value = result.value!!
+                    searchVm.updateCities(result.value)
                 }
                 is Failure -> {
                     Log.d("MainViewModel", "Failure:${result.reason}")
-                    cities.value = emptyList()
+                    searchVm.updateCities(emptyList())
                 }
             }
         }
@@ -79,9 +83,28 @@ class MainViewModel : ViewModel() {
     // private methods
     private fun getWeatherByCoordinator(coordinator: Coordinator) {
         CoroutineScope(Dispatchers.IO).async {
-            when (val weather = weatherUseCase.getWeatherByGeographic(coordinator)) {
+            when (val result = weatherUseCase.getWeatherByGeographic(coordinator)) {
                 is Success -> {
-                    localCityWeather.postValue(weather.value)
+                    val city = City(result.value.cityId, result.value, result.value.cityName, null)
+                    localCityViewModel.updateCity(city)
+                }
+                is Failure -> {
+                    result.reason
+                    // TODO: error handling
+                }
+                else -> {
+                    // TODO: error handling
+                }
+            }
+        }
+    }
+
+    private fun getWeatherByCityId(cityId: Long) {
+        CoroutineScope(Dispatchers.IO).async {
+            when (val weather = weatherUseCase.getWeatherByCityId(cityId)) {
+                is Success -> {
+                    localCityViewModel.updateWeather(weather.value)
+                    searchHistoryVm.updateWeather(weather.value)
                 }
                 is Failure -> {
                     weather.reason
@@ -98,10 +121,13 @@ class MainViewModel : ViewModel() {
         runBlocking {
             when (val result = searchHistoryUseCase.getLastAccessedCities(5)) {
                 is Success -> {
-                    historyCities.value = result.value!!
+                    searchHistoryVm.cities.postValue(result.value!!)
+                    result.value.forEach {
+                        getWeatherByCityId(it.id)
+                    }
                 }
                 is Failure -> {
-                    historyCities.value = emptyList()
+                    searchHistoryVm.cities.postValue(emptyList())
                 }
             }
         }

@@ -10,5 +10,20 @@ class SearchHistoryViewModel : ViewModel() {
     val cities = MutableLiveData<List<City>>()
 
 
+    fun updateWeather(weather: Weather) {
+        val copyOfCities = cities.value
+
+
+        if (copyOfCities != null) {
+            copyOfCities.forEach {
+                if (it.id == weather.cityId) {
+                    it.weather = weather
+                }
+            }
+
+            cities.postValue(copyOfCities!!)
+        }
+
+    }
 
 }

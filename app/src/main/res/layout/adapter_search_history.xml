@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -15,8 +15,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:maxWidth="200dp"
+            android:singleLine="true"
             android:text="Hong Kong"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tempTV"
@@ -24,15 +28,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="30º"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/weatherCondIV"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginLeft="16dp"
-            app:srcCompat="@drawable/outline_wb_sunny_amber_a100_24dp"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            app:srcCompat="@drawable/outline_wb_sunny_amber_a100_24dp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

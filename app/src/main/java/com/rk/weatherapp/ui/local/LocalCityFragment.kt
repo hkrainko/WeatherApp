@@ -42,26 +42,26 @@ class LocalCityFragment(private val weather: Weather?) : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(
-            this,
-            LocalCityViewModelFactory(weather)
-        ).get(LocalCityViewModel::class.java)
-        viewModel.cityWeather.observe(viewLifecycleOwner, Observer { cityWeather ->
-            binding.cityNameTv.text = cityWeather?.cityName ?: "-"
+//        viewModel = ViewModelProvider(
+//            this,
+//            LocalCityViewModelFactory(weather)
+//        ).get(LocalCityViewModel::class.java)
+        viewModel.city.observe(viewLifecycleOwner, Observer { city ->
+            binding.cityNameTv.text = city?.weather?.cityName ?: "-"
             binding.conditionIv
             GlideImageLoader.loadImage(
                 binding.conditionIv.context,
-                cityWeather?.condition?.type?.toOpenWeatherUrl(),
+                city?.weather?.condition?.type?.toOpenWeatherUrl(),
                 binding.conditionIv
             )
-            binding.conditionDescTv.text = cityWeather?.condition?.desc ?: "-"
-            binding.tempTv.text = "${cityWeather?.temp.toString()}º"
-            binding.highTempTv.text = "H ${cityWeather?.tempMax.toString()}º"
-            binding.lowTempTv.text = "L ${cityWeather?.tempMin.toString()}º"
-            binding.pressureTV.text = cityWeather?.pressure.toString()
-            binding.humidityTV.text = "${cityWeather?.humidity.toString()}%"
-            binding.sunriseTV.text = cityWeather?.sunrise?.toDisplayHHmm() ?: "-"
-            binding.sunsetTV.text = cityWeather?.sunset?.toDisplayHHmm() ?: "-"
+            binding.conditionDescTv.text = city?.weather?.condition?.desc ?: "-"
+            binding.tempTv.text = "${city?.weather?.temp ?: "-"}º"
+            binding.highTempTv.text = "H ${city?.weather?.tempMax ?: "-"}º"
+            binding.lowTempTv.text = "L ${city?.weather?.tempMin ?: "-"}º"
+            binding.pressureTV.text = if(city?.weather?.pressure != null) city?.weather?.pressure.toString() else "-"
+            binding.humidityTV.text = "${city?.weather?.humidity ?: "-"}%"
+            binding.sunriseTV.text = city?.weather?.sunrise?.toDisplayHHmm() ?: "-"
+            binding.sunsetTV.text = city?.weather?.sunset?.toDisplayHHmm() ?: "-"
         })
     }
 

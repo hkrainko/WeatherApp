@@ -26,8 +26,12 @@ import com.google.android.gms.location.LocationServices
 import com.rk.weatherapp.R
 import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.ui.local.LocalCityFragment
+import com.rk.weatherapp.ui.local.LocalCityViewModel
+import com.rk.weatherapp.ui.local.LocalCityViewModelFactory
 import com.rk.weatherapp.ui.search.SearchFragment
+import com.rk.weatherapp.ui.search.SearchViewModel
 import com.rk.weatherapp.ui.search.history.SearchHistoryFragment
+import com.rk.weatherapp.ui.search.history.SearchHistoryViewModel
 
 class MainFragment : Fragment() {
 
@@ -55,18 +59,7 @@ class MainFragment : Fragment() {
         })
     }
 
-    private val searchHistoryFragment by lazy {
-        SearchHistoryFragment.newInstance(object :
-            SearchHistoryFragment.OnSearchHistoryItemClickListener {
-            override fun onSearchHistoryItemClick(city: City) {
-                viewModel.onClickSearchHistory(city.id)
-                val action =
-                    MainFragmentDirections
-                        .actionMainFragmentToSearchResultFragment()
-                view?.findNavController()?.navigate(action)
-            }
-        })
-    }
+    private lateinit var searchHistoryFragment: SearchHistoryFragment
 
     private val localCityFragment: LocalCityFragment by lazy {
         LocalCityFragment.newInstance(null)
@@ -104,26 +97,40 @@ class MainFragment : Fragment() {
             setFragmentContainer(hasFocus)
         }
         setFragmentContainer(false)
-        childFragmentManager.beginTransaction()
-            .replace(R.id.searchHistoryFragmentContainerView, searchHistoryFragment).commit()
+//        childFragmentManager.beginTransaction()
+//            .replace(R.id.searchHistoryFragmentContainerView, searchHistoryFragment).commit()
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-        viewModel.cities.observe(viewLifecycleOwner, Observer { cities ->
-            searchFragment.viewModel.cities.value = cities
+        searchHistoryFragment = SearchHistoryFragment.newInstance(object :
+            SearchHistoryFragment.OnSearchHistoryItemClickListener {
+            override fun onSearchHistoryItemClick(city: City) {
+                viewModel.onClickSearchHistory(city.id)
+                val action =
+                    MainFragmentDirections
+                        .actionMainFragmentToSearchResultFragment()
+                view?.findNavController()?.navigate(action)
+            }
         })
 
-        viewModel.localCityWeather.observe(viewLifecycleOwner, {
-            localCityFragment.viewModel.cityWeather.value = it
-        })
+        // let viewModel own the child viewModel
+        viewModel.searchHistoryVm = ViewModelProvider(this).get(SearchHistoryViewModel::class.java)
+        viewModel.localCityViewModel = ViewModelProvider(
+            this,
+            LocalCityViewModelFactory(null)
+        ).get(LocalCityViewModel::class.java)
+        viewModel.searchVm = ViewModelProvider(this).get(SearchViewModel::class.java)
 
-        viewModel.historyCities.observe(viewLifecycleOwner, {
-            searchHistoryFragment.viewModel.cities.value = it
-        })
+        searchHistoryFragment.viewModel = viewModel.searchHistoryVm
+        localCityFragment.viewModel = viewModel.localCityViewModel
+        searchFragment.viewModel = viewModel.searchVm
+
+        childFragmentManager.beginTransaction()
+            .replace(R.id.searchHistoryFragmentContainerView, searchHistoryFragment).commit()
+
     }
 
     override fun onResume() {

@@ -49,7 +49,7 @@ class SearchHistoryFragment(private val listener: OnSearchHistoryItemClickListen
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SearchHistoryViewModel::class.java)
+//        viewModel = ViewModelProvider(this).get(SearchHistoryViewModel::class.java)
         viewModel.cities.observe(viewLifecycleOwner, Observer { cities ->
             (recyclerView.adapter as SearchHistoryFragment.SearchHistoryAdapter).setCitiesList(cities)
         })

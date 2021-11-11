@@ -3,16 +3,32 @@ package com.rk.weatherapp.ui.local
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.domain.entities.Weather
 
 class LocalCityViewModel(weather: Weather?) : ViewModel() {
 
-    val cityWeather = MutableLiveData<Weather?>()
+    val city = MutableLiveData<City?>()
 
     init {
-        cityWeather.value = weather
+//        city.value = weather
     }
 
+    fun updateCity(city: City?) {
+        this.city.postValue(city)
+    }
+
+    fun updateWeather(weather: Weather?) {
+        if (weather == null) {
+            return
+        }
+        if (city.value?.id != weather.cityId) {
+            return
+        }
+        val copyOfCity = city.value
+        copyOfCity?.weather = weather
+        city.postValue(copyOfCity)
+    }
 
 }
 

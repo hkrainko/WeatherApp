@@ -48,7 +48,7 @@ class SearchFragment(private val listener: OnCityItemClickListener) : Fragment()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+//        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
 
         viewModel.cities.observe(viewLifecycleOwner, Observer { cities ->
             Log.d("SearchFragment", "cities:${cities.size}")
