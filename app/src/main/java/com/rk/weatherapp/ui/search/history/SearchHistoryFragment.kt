@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -41,6 +42,10 @@ class SearchHistoryFragment(private val listener: OnSearchHistoryItemClickListen
                 override fun onSearchHistoryItemClick(city: City) {
                     listener.onSearchHistoryItemClick(city)
                 }
+
+                override fun onSearchHistoryDeleteClick(city: City) {
+                    listener.onSearchHistoryDeleteClick(city)
+                }
             })
             layoutManager = LinearLayoutManager(context)
         }
@@ -62,6 +67,7 @@ class SearchHistoryFragment(private val listener: OnSearchHistoryItemClickListen
         val cityTV: TextView = binding.cityTV
         val tempTV: TextView = binding.tempTV
         val weatherCondIV: ImageView = binding.weatherCondIV
+        val deleteBtn: ImageButton = binding.deleteBtn
 
         fun bind(city: City, clickListener: OnSearchHistoryItemClickListener) {
             cityTV.text = city.name
@@ -73,6 +79,9 @@ class SearchHistoryFragment(private val listener: OnSearchHistoryItemClickListen
             }
             itemView.setOnClickListener {
                 clickListener.onSearchHistoryItemClick(city)
+            }
+            deleteBtn.setOnClickListener {
+                clickListener.onSearchHistoryDeleteClick(city)
             }
         }
     }
@@ -105,9 +114,6 @@ class SearchHistoryFragment(private val listener: OnSearchHistoryItemClickListen
 
         override fun onBindViewHolder(holder: SearchHistoryFragment.ViewHolder, position: Int) {
             val city = cities[position]
-//            holder.cityTV.text = city.name
-//            holder.tempTV.text =
-//                if (city.weather?.temp != null) city.weather!!.temp.toString() else "-"
             holder.bind(city, clickListener)
         }
 
@@ -118,5 +124,6 @@ class SearchHistoryFragment(private val listener: OnSearchHistoryItemClickListen
 
     interface OnSearchHistoryItemClickListener {
         fun onSearchHistoryItemClick(city: City)
+        fun onSearchHistoryDeleteClick(city: City)
     }
 }

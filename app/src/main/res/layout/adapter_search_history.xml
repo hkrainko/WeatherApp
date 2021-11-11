@@ -43,7 +43,7 @@
             app:srcCompat="@drawable/outline_wb_sunny_amber_a100_24dp" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/deleteBtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="16dp"

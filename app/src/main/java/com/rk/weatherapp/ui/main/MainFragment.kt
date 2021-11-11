@@ -119,6 +119,10 @@ class MainFragment : Fragment() {
                         .actionMainFragmentToSearchResultFragment()
                 view?.findNavController()?.navigate(action)
             }
+
+            override fun onSearchHistoryDeleteClick(city: City) {
+                viewModel.onClickSearchHistoryDelete(city.id)
+            }
         })
 
         // let viewModel own the child viewModel

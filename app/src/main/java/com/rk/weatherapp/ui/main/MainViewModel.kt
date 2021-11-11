@@ -71,6 +71,14 @@ class MainViewModel : ViewModel() {
         runBlocking {
             searchHistoryUseCase.setSearchHistory(cityId)
         }
+        getHistory()
+    }
+
+    fun onClickSearchHistoryDelete(cityId: Long) {
+        runBlocking {
+            searchHistoryUseCase.removeCityFromSearchHistory(cityId)
+        }
+        getHistory()
     }
 
     fun onLocationUpdate(lat: Double, lon: Double) {
