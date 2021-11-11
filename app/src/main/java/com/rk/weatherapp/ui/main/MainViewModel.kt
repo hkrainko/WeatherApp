@@ -1,8 +1,6 @@
 package com.rk.weatherapp.ui.main
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rk.weatherapp.data.repositories.http.OpenWeatherWeatherRepo
 import com.rk.weatherapp.data.repositories.realm.RealmCityRepo
@@ -15,7 +13,6 @@ import com.rk.weatherapp.infrastructure.database.RealmDBManager
 import com.rk.weatherapp.ui.local.LocalCityViewModel
 import com.rk.weatherapp.ui.search.SearchViewModel
 import com.rk.weatherapp.ui.search.history.SearchHistoryViewModel
-import com.rk.weatherapp.ui.search.result.SearchResultViewModel
 import kotlinx.coroutines.*
 
 class MainViewModel : ViewModel() {
@@ -66,13 +63,13 @@ class MainViewModel : ViewModel() {
     fun onClickSearchResult(cityId: Long) {
         // TODO: async call
         runBlocking {
-            searchHistoryUseCase.setLastAccessedCity(cityId)
+            searchHistoryUseCase.setSearchHistory(cityId)
         }
     }
 
     fun onClickSearchHistory(cityId: Long) {
         runBlocking {
-            searchHistoryUseCase.setLastAccessedCity(cityId)
+            searchHistoryUseCase.setSearchHistory(cityId)
         }
     }
 
@@ -119,7 +116,7 @@ class MainViewModel : ViewModel() {
 
     private fun getHistory() {
         runBlocking {
-            when (val result = searchHistoryUseCase.getLastAccessedCities(5)) {
+            when (val result = searchHistoryUseCase.getSearchHistory(5)) {
                 is Success -> {
                     searchHistoryVm.cities.postValue(result.value!!)
                     result.value.forEach {
