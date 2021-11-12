@@ -23,7 +23,8 @@ import kotlinx.coroutines.runBlocking
 
 class MainViewModel : ViewModel() {
 
-    private val weatherUseCase: WeatherUseCase = DefaultWeatherUseCase(OpenWeatherWeatherRepo())
+    // TODO: Use Hilt for DI
+    private val weatherUseCase: WeatherUseCase = DefaultWeatherUseCase(OpenWeatherWeatherRepo(), RealmCityRepo(RealmDBManager.realm))
     private val searchHistoryUseCase: SearchHistoryUseCase =
         DefaultSearchHistoryUseCase(RealmCityRepo(RealmDBManager.realm))
 

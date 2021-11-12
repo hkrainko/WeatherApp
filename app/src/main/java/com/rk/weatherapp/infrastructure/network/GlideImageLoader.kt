@@ -10,7 +10,7 @@ object GlideImageLoader {
         if (url == null) {
             imageView.setImageDrawable(null)
         }
-       Glide.with(ctx).load(url).into(imageView)
+        Glide.with(ctx).load(url).into(imageView)
     }
 
 }
