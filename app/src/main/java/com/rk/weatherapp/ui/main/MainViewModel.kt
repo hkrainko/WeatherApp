@@ -13,7 +13,7 @@ import com.rk.weatherapp.domain.interfaces.usecases.WeatherUseCase
 import com.rk.weatherapp.domain.usecases.DefaultSearchHistoryUseCase
 import com.rk.weatherapp.domain.usecases.DefaultWeatherUseCase
 import com.rk.weatherapp.infrastructure.database.RealmDBManager
-import com.rk.weatherapp.ui.local.LocalCityViewModel
+import com.rk.weatherapp.ui.city.CityViewModel
 import com.rk.weatherapp.ui.search.SearchViewModel
 import com.rk.weatherapp.ui.search.history.SearchHistoryViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +29,7 @@ class MainViewModel : ViewModel() {
 
     lateinit var searchHistoryVm: SearchHistoryViewModel
     lateinit var searchVm: SearchViewModel
-    lateinit var localCityViewModel: LocalCityViewModel
+    lateinit var cityViewModel: CityViewModel
 
     // UI events
     fun onResume() {
@@ -72,7 +72,7 @@ class MainViewModel : ViewModel() {
             searchHistoryUseCase.setSearchHistory(city.id)
         }
         getHistory()
-        localCityViewModel.displayQueryCity(city)
+        cityViewModel.displayQueryCity(city)
         getWeatherByCityId(city.id)
     }
 
@@ -81,7 +81,7 @@ class MainViewModel : ViewModel() {
             searchHistoryUseCase.setSearchHistory(city.id)
         }
         getHistory()
-        localCityViewModel.displayQueryCity(city)
+        cityViewModel.displayQueryCity(city)
         getWeatherByCityId(city.id)
     }
 
@@ -102,7 +102,7 @@ class MainViewModel : ViewModel() {
             when (val result = weatherUseCase.getWeatherByGeographic(coordinator)) {
                 is Success -> {
                     val city = City(result.value.cityId, result.value, result.value.cityName, null)
-                    localCityViewModel.updateLocalCity(city)
+                    cityViewModel.updateLocalCity(city)
                 }
                 is Failure -> {
                     result.reason
@@ -119,7 +119,7 @@ class MainViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).async {
             when (val weather = weatherUseCase.getWeatherByCityId(cityId)) {
                 is Success -> {
-                    localCityViewModel.updateWeather(weather.value)
+                    cityViewModel.updateWeather(weather.value)
                     searchHistoryVm.updateWeather(weather.value)
                 }
                 is Failure -> {

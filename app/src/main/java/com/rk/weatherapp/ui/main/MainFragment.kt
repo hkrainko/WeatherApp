@@ -14,12 +14,9 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -27,8 +24,8 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.rk.weatherapp.R
 import com.rk.weatherapp.domain.entities.City
-import com.rk.weatherapp.ui.local.LocalCityFragment
-import com.rk.weatherapp.ui.local.LocalCityViewModel
+import com.rk.weatherapp.ui.city.CityFragment
+import com.rk.weatherapp.ui.city.CityViewModel
 //import com.rk.weatherapp.ui.local.LocalCityViewModelFactory
 import com.rk.weatherapp.ui.search.SearchFragment
 import com.rk.weatherapp.ui.search.SearchViewModel
@@ -60,8 +57,8 @@ class MainFragment : Fragment() {
     private lateinit var searchHistoryFragment: SearchHistoryFragment
     private lateinit var searchHistoryFragmentContainerView: FragmentContainerView
 
-    private val localCityFragment: LocalCityFragment by lazy {
-        LocalCityFragment.newInstance(null)
+    private val cityFragment: CityFragment by lazy {
+        CityFragment.newInstance(null)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,14 +116,14 @@ class MainFragment : Fragment() {
 
         // let viewModel own the child viewModel
         viewModel.searchHistoryVm = ViewModelProvider(this).get(SearchHistoryViewModel::class.java)
-        viewModel.localCityViewModel = ViewModelProvider(
+        viewModel.cityViewModel = ViewModelProvider(
             this,
 //            LocalCityViewModelFactory(null)
-        ).get(LocalCityViewModel::class.java)
+        ).get(CityViewModel::class.java)
         viewModel.searchVm = ViewModelProvider(this).get(SearchViewModel::class.java)
 
         searchHistoryFragment.viewModel = viewModel.searchHistoryVm
-        localCityFragment.viewModel = viewModel.localCityViewModel
+        cityFragment.viewModel = viewModel.cityViewModel
         searchFragment.viewModel = viewModel.searchVm
 
         childFragmentManager.beginTransaction()
@@ -146,7 +143,7 @@ class MainFragment : Fragment() {
             childFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, searchFragment).commit()
             searchHistoryFragmentContainerView.visibility = View.GONE
         } else {
-            childFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, localCityFragment).commit()
+            childFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, cityFragment).commit()
             searchHistoryFragmentContainerView.visibility = View.VISIBLE
         }
     }

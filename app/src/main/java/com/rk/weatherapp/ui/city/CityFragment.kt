@@ -1,4 +1,4 @@
-package com.rk.weatherapp.ui.local
+package com.rk.weatherapp.ui.city
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,13 +13,13 @@ import com.rk.weatherapp.infrastructure.network.GlideImageLoader
 import com.rk.weatherapp.infrastructure.toDisplayHHmm
 import com.rk.weatherapp.infrastructure.toOpenWeatherUrl
 
-class LocalCityFragment(private val weather: Weather?) : Fragment() {
+class CityFragment(private val weather: Weather?) : Fragment() {
 
     companion object {
-        fun newInstance(weather: Weather?) = LocalCityFragment(weather)
+        fun newInstance(weather: Weather?) = CityFragment(weather)
     }
 
-    lateinit var viewModel: LocalCityViewModel
+    lateinit var viewModel: CityViewModel
 
     private lateinit var binding: LocalCityFragmentBinding
 

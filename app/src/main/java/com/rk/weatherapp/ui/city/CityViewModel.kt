@@ -1,12 +1,11 @@
-package com.rk.weatherapp.ui.local
+package com.rk.weatherapp.ui.city
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.rk.weatherapp.domain.entities.City
 import com.rk.weatherapp.domain.entities.Weather
 
-class LocalCityViewModel : ViewModel() {
+class CityViewModel : ViewModel() {
 
     val displayCity = MutableLiveData<City?>()
 
